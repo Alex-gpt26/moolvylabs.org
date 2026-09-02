@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found | Moolvy Labs</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables & Theming --- */
+        :root {
+            --bg-color: #ffffff;
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --primary-blue: #2563eb;
+            --primary-hover: #1d4ed8;
+            --card-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --header-bg: rgba(15, 23, 42, 0.8);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-blue: #3b82f6;
+            --primary-hover: #60a5fa;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+        }
+
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition-speed) ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img, svg {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-blue);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle,
+        .lang-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .theme-toggle:hover,
+        .lang-toggle:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            display: block;
+        }
+        .theme-toggle .icon-moon { display: none; }
+        [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+        [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+
+        /* Language toggle */
+        .lang-toggle {
+            gap: 4px;
+            padding: 8px 10px;
+        }
+
+        .lang-toggle .lang-option {
+            padding: 2px 6px;
+            border-radius: 5px;
+            color: var(--text-muted);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .lang-toggle .lang-option.active {
+            color: #fff;
+            background-color: var(--primary-blue);
+        }
+
+        .lang-toggle .lang-sep {
+            color: var(--border-color);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-main);
+            padding: 6px;
+            line-height: 0;
+        }
+
+        .mobile-menu-btn .icon-close { display: none; }
+        .mobile-menu-btn.open .icon-open { display: none; }
+        .mobile-menu-btn.open .icon-close { display: block; }
+
+        /* Mobile dropdown panel */
+        .mobile-nav-panel {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            padding: 12px 20px 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+        }
+
+        .mobile-nav-panel.open {
+            display: flex;
+        }
+
+        .mobile-nav-panel .nav-link {
+            padding: 12px 4px;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-nav-panel .nav-link:last-child {
+            border-bottom: none;
+        }
+
+        /* --- 404 Content --- */
+        .error-main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .error-content {
+            text-align: center;
+            max-width: 520px;
+        }
+
+        .error-character {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 28px;
+            animation: floatChar 3.2s ease-in-out infinite;
+        }
+
+        @keyframes floatChar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .error-character svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            filter: drop-shadow(0 16px 24px rgba(0,0,0,0.12));
+        }
+
+        .question-bubble {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+            animation: bounceQ 3.2s ease-in-out infinite;
+        }
+
+        @keyframes bounceQ {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            50% { transform: translateX(-50%) translateY(-6px) rotate(-6deg); }
+        }
+
+        .error-code {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .error-subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+        }
+
+        .error-cta {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .error-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.5);
+            background-color: var(--primary-hover);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .social-link:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .footer-links {
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links .link-sep {
+            color: var(--border-color);
+        }
+
+        .privacy-link {
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .privacy-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
+        /* --- Responsive Design: Tablets --- */
+        @media (max-width: 900px) {
+            .container { padding: 0 24px; }
+
+            .error-code { font-size: 3.8rem; }
+            .error-character { width: 150px; height: 150px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header-inner {
+                height: 68px;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            .theme-toggle .theme-text {
+                display: none;
+            }
+
+            .theme-toggle {
+                padding: 8px;
+            }
+
+            .header-controls {
+                gap: 6px;
+            }
+        }
+
+        /* --- Responsive Design: Phones --- */
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+
+            .error-main { padding-top: 90px; }
+            .error-character { width: 120px; height: 120px; margin-bottom: 20px; }
+            .question-bubble { width: 36px; height: 36px; font-size: 1.15rem; top: -26px; }
+            .error-code { font-size: 2.8rem; }
+            .error-title { font-size: 1.2rem; }
+            .error-subtitle { font-size: 0.95rem; margin-bottom: 28px; }
+            .error-cta { padding: 12px 26px; font-size: 0.95rem; }
+
+            .footer-social {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo-container">
+                <img src="moolvy.png" alt="Moolvy Labs Logo" class="logo-img">
+                <span>Moolvy Labs</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html#wiki" class="nav-link" data-i18n="nav_wiki">WIKI</a></li>
+                    <li><a href="index.html#news" class="nav-link" data-i18n="nav_news">NEWS</a></li>
+                </ul>
+
+                <div class="header-controls">
+                    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language" type="button">
+                        <span class="lang-option" data-lang-option="en">EN</span>
+                        <span class="lang-sep">/</span>
+                        <span class="lang-option" data-lang-option="ru">RU</span>
+                    </button>
+
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" type="button">
+                        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        <span class="theme-text" data-i18n="theme_label">Theme</span>
+                    </button>
+
+                    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" type="button">
+                        <svg class="icon-open" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <div id="mobile-nav-panel" class="mobile-nav-panel">
+            <a href="index.html#wiki" class="nav-link" data-i18n="nav_wiki">WIKI</a>
+            <a href="index.html#news" class="nav-link" data-i18n="nav_news">NEWS</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="error-main">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-character">
+                    <div class="question-bubble">?</div>
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- back shadow circle (offset, darker green) -->
+                        <circle cx="104" cy="106" r="92" fill="#4CAF6E"/>
+                        <!-- main body -->
+                        <circle cx="96" cy="98" r="92" fill="#8FE3A3"/>
+                        <!-- eyes -->
+                        <ellipse cx="72" cy="108" rx="20" ry="26" fill="#ffffff" transform="rotate(-18 72 108)"/>
+                        <ellipse cx="122" cy="84" rx="18" ry="24" fill="#ffffff" transform="rotate(-18 122 84)"/>
+                    </svg>
+                </div>
+
+                <p class="error-code">404</p>
+                <h1 class="error-title" data-i18n="e_title">We don't have this page</h1>
+                <p class="error-subtitle" data-i18n="e_subtitle">The page you're looking for doesn't exist, was moved, or never lived here in the first place.</p>
+                <a href="index.html" class="error-cta" data-i18n="e_cta">Back to home</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-social">
+                <a href="https://x.com/moolvylabs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Moolvy Labs on X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23.3 22H16.9l-5-6.5-5.8 6.5H2l8-9.2L1 2h6.6l4.5 6L18.9 2Zm-1.1 18h1.7L7.3 3.9H5.5L17.8 20Z"/></svg>
+                    <span>@moolvylabs</span>
+                </a>
+                <a href="https://x.com/qumenmd" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Qumen on X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23.3 22H16.9l-5-6.5-5.8 6.5H2l8-9.2L1 2h6.6l4.5 6L18.9 2Zm-1.1 18h1.7L7.3 3.9H5.5L17.8 20Z"/></svg>
+                    <span>@qumenmd</span>
+                </a>
+            </div>
+            <p data-i18n="footer_text">&copy; 2023 Moolvy Labs. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy.html" class="privacy-link" data-i18n="privacy_link">Privacy Policy</a>
+                <span class="link-sep">&middot;</span>
+                <a href="terms.html" class="privacy-link" data-i18n="terms_link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const body = document.body;
+            const htmlEl = document.documentElement;
+
+            /* ---------------------------------------------------
+             * Theme Toggle
+             * --------------------------------------------------- */
+            const themeToggleBtn = document.getElementById('theme-toggle');
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.setAttribute('data-theme', 'dark');
+                } else {
+                    body.removeAttribute('data-theme');
+                }
+            }
+
+            let savedTheme = null;
+            try {
+                savedTheme = localStorage.getItem('theme');
+            } catch (e) {
+                /* localStorage unavailable — fall back to system preference */
+            }
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(savedTheme || (systemPrefersDark ? 'dark' : 'light'));
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isDark = body.getAttribute('data-theme') === 'dark';
+                const nextTheme = isDark ? 'light' : 'dark';
+                applyTheme(nextTheme);
+                try {
+                    localStorage.setItem('theme', nextTheme);
+                } catch (e) { /* ignore */ }
+            });
+
+            /* ---------------------------------------------------
+             * Language Toggle (English is the default language,
+             * manual switch EN <-> RU) — kept in sync with index.html
+             * via the same localStorage key.
+             * --------------------------------------------------- */
+            const translations = {
+                en: {
+                    nav_wiki: 'WIKI',
+                    nav_news: 'NEWS',
+                    theme_label: 'Theme',
+                    footer_text: '\u00A9 2023 Moolvy Labs. All rights reserved.',
+                    privacy_link: 'Privacy Policy',
+                    terms_link: 'Terms of Service',
+
+                    e_title: "We don't have this page",
+                    e_subtitle: "The page you're looking for doesn't exist, was moved, or never lived here in the first place.",
+                    e_cta: 'Back to home'
+                },
+                ru: {
+                    nav_wiki: 'ВИКИ',
+                    nav_news: 'НОВОСТИ',
+                    theme_label: 'Тема',
+                    footer_text: '\u00A9 2023 Moolvy Labs. Все права защищены.',
+                    privacy_link: 'Политика конфиденциальности',
+                    terms_link: 'Пользовательское соглашение',
+
+                    e_title: 'У нас нет такой страницы',
+                    e_subtitle: 'Страница, которую вы ищете, не существует, была перемещена или никогда здесь не находилась.',
+                    e_cta: 'На главную'
+                }
+            };
+
+            const langToggleBtn = document.getElementById('lang-toggle');
+            const langOptions = langToggleBtn.querySelectorAll('.lang-option');
+            const i18nElements = document.querySelectorAll('[data-i18n]');
+            const i18nHtmlElements = document.querySelectorAll('[data-i18n-html]');
+
+            function applyLanguage(lang) {
+                const dict = translations[lang] || translations.en;
+
+                i18nElements.forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (dict[key] !== undefined) {
+                        el.textContent = dict[key];
+                    }
+                });
+
+                // These elements contain a controlled <strong> tag written by us
+                // (not user input), so it's safe to set as HTML here.
+                i18nHtmlElements.forEach(el => {
+                    const key = el.getAttribute('data-i18n-html');
+                    if (dict[key] !== undefined) {
+                        el.innerHTML = dict[key];
+                    }
+                });
+
+                langOptions.forEach(opt => {
+                    opt.classList.toggle('active', opt.getAttribute('data-lang-option') === lang);
+                });
+
+                htmlEl.setAttribute('lang', lang);
+                langToggleBtn.setAttribute('aria-label', lang === 'en' ? 'Switch to Russian' : 'Переключить на английский');
+            }
+
+            let savedLang = null;
+            try {
+                savedLang = localStorage.getItem('lang');
+            } catch (e) { /* ignore */ }
+
+            // English is always the default on first load, regardless of browser locale.
+            const initialLang = (savedLang === 'en' || savedLang === 'ru') ? savedLang : 'en';
+            applyLanguage(initialLang);
+
+            langToggleBtn.addEventListener('click', () => {
+                const currentLang = htmlEl.getAttribute('lang') === 'ru' ? 'ru' : 'en';
+                const nextLang = currentLang === 'en' ? 'ru' : 'en';
+                applyLanguage(nextLang);
+                try {
+                    localStorage.setItem('lang', nextLang);
+                } catch (e) { /* ignore */ }
+            });
+
+            /* ---------------------------------------------------
+             * Mobile Menu
+             * --------------------------------------------------- */
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNavPanel = document.getElementById('mobile-nav-panel');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                const isOpen = mobileNavPanel.classList.toggle('open');
+                mobileMenuBtn.classList.toggle('open', isOpen);
+                mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+                mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+            });
+
+            mobileNavPanel.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNavPanel.classList.remove('open');
+                    mobileMenuBtn.classList.remove('open');
+                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                    mobileMenuBtn.setAttribute('aria-label', 'Open menu');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
